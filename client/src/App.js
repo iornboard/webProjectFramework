@@ -21,34 +21,27 @@ const styles = theme => ({
 })
 
 
-
-
-const customer = [
-{
-  'id' : 1,
-  'name' : '남현수',
-  'birthday' : '961106',
-  'image' : 'https://placeimg.com/64/64/1'
-},
-{
-  'id' : 2,
-  'name' : '남현수1',
-  'birthday' : '961106',
-  'image' : 'https://placeimg.com/64/64/2'
-},
-{
-  'id' : 3,
-  'name' : '남현수2',
-  'birthday' : '961106',
-  'image' : 'https://placeimg.com/64/64/3'
-},
-]
-
-
 // https://placeimg.com/64/64/any >> 아무 이미지나 가져와서 쓸 수 있음
 // 리엑트에는 key 값이 필요함, 그래서 아무 키가 될 수 있는 것을 사용할 것
 
 class App extends Component {
+
+
+  state = {
+    customer : ""
+  }
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({customer : res}))
+      .catch(err => console.log(err));
+  }
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
 
   render() {
     const { classes } =  this.props;
@@ -69,7 +62,7 @@ class App extends Component {
           <TableBody>
             
             {
-              customer.map(c => {
+              this.state.customer ? this.state.customer.map(c => {
                 return(
                   <Customer
                     key = {c.id} 
@@ -80,7 +73,7 @@ class App extends Component {
                   />
                 )
               })  
-            }
+            : "" }
           </TableBody>
         </Table>
       </Paper>
