@@ -1,5 +1,5 @@
 import React from 'react';
-import {post} from 'axios';
+import axios from 'axios';
 
 class CustomerAdd extends React.Component{
 
@@ -13,11 +13,12 @@ class CustomerAdd extends React.Component{
 
     handleFormSubmit = (e) => {
         e.preventDefault()
-        this.addCustomer()
+        this._addData()
             .then(( response ) => {
                 console.log(response.data);
             }) 
     }
+
 
     handleValueChange = (e) => {
         let nextState = {};
@@ -25,19 +26,26 @@ class CustomerAdd extends React.Component{
         this.setState(nextState);
     }
 
-    addCustomer = () => {
-        const url = '/api/customers';
-        const formData = new FormData();
-        formData.append('name', this.state.username);
-        formData.append('birthday', this.state.birthday);
-        const config = {
-            headers : {
-                'content-type' : "multipart/form-data"
-            }
-        }
-        return post(url, formData, config);
-    }
 
+
+    // 클라이언트 -> 서버 (전달) (axios + console)
+
+    _addData = async(e) =>{
+        const formData = 
+            {
+            'name':this.state.username,
+            'birthday': this.state.birthday
+            }
+
+        console.log(await axios( '/api/customers', {
+            method : 'POST',
+            data : formData ,
+            headers: new Headers()
+        }))
+    }
+    
+
+    // 페이지 구성(종속) 
 
     render() {
         return(

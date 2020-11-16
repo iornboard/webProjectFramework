@@ -9,9 +9,9 @@ app.set('port', process.env.PORT || 5000);
 
 
 const { sequelize } = require('./models'); 
-dotenv.config();  // env 파일을 환경변수로 설정 
+dotenv.config();  
 
-sequelize.sync({ force: false })  // force가 ture라면 데이터베이스를 삭세하고 쓸지
+sequelize.sync({ force: false })  
   .then(() => {
     console.log('데이터베이스 연결 성공');
   })
@@ -25,36 +25,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended : true} ));
 
 
-
-app.post('/api/customers', async (req, res) =>{
-
+app.post('/api/customers', async  (req, res, next) => {
+     await Post.create({  
+      name: req.body.name,  
+      birthday: req.body.birthday, 
+      Num: 1,
+      image : 'https://placeimg.com/64/64/any'
+    });
 })
 
 
+app.get('/api/customers' , async  (req, res, next) => {
 
+    const post = await Post.findAll();
 
-app.get('/api/customers' ,  (req, res) => {
+    console.log(post);
+    res.send(post);
 
-    res.send([
-            {
-              'id' : 1,
-              'name' : '남현수',
-              'birthday' : '961106',
-              'image' : 'https://placeimg.com/64/64/1'
-            },
-            {
-              'id' : 2,
-              'name' : '남현수1',
-              'birthday' : '961106',
-              'image' : 'https://placeimg.com/64/64/2'
-            },
-            {
-              'id' : 3,
-              'name' : '남현수2',
-              'birthday' : '961106',
-              'image' : 'https://placeimg.com/64/64/3'
-            },
-        ]);
 });
 
 app.listen(app.get('port'), () => {
