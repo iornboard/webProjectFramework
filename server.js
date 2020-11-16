@@ -1,14 +1,40 @@
 const express = require('express');
 const bodyParser = require('body-Parser');
+const dotenv = require('dotenv');
 
 const app = express();
 app.set('port', process.env.PORT || 5000);
 
 
+
+
+const { sequelize } = require('./models'); 
+dotenv.config();  // env 파일을 환경변수로 설정 
+
+sequelize.sync({ force: false })  // force가 ture라면 데이터베이스를 삭세하고 쓸지
+  .then(() => {
+    console.log('데이터베이스 연결 성공');
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+const { Post } = require('./models');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended : true} ));
 
+
+
+app.post('/api/customers', async (req, res) =>{
+
+})
+
+
+
+
 app.get('/api/customers' ,  (req, res) => {
+
     res.send([
             {
               'id' : 1,
