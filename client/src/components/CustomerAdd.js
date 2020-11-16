@@ -1,5 +1,7 @@
 import React from 'react';
 import axios from 'axios';
+import { TextField } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 class CustomerAdd extends React.Component{
 
@@ -27,6 +29,7 @@ class CustomerAdd extends React.Component{
     }
 
 
+    // 위는 가능한 건들이지 말 것
 
     // 클라이언트 -> 서버 (전달) (axios + console)
 
@@ -51,9 +54,9 @@ class CustomerAdd extends React.Component{
         return(
             <form onSubmit={this.handleFormSubmit}>
                 <h1> 인원추가 </h1>
-                이름 : <input type="text" name="username" value={this.state.username} onChange = {this.handleValueChange}/><br/>
-                생일 : <input type="text" name="birthday" value={this.state.birthday} onChange = {this.handleValueChange}/><br/>
-                <button type="submit"> 추가하기 </button>
+                <TextField label="이름을 입력해주세요" variant="outlined" type="text" name="username" value={this.state.username} onChange = {this.handleValueChange}/><br/>
+                <TextField label="생일을 입력해주세요" variant="outlined" type="text" name="birthday" value={this.state.birthday} onChange = {this.handleValueChange}/>
+                <Button variant="contained" color="primary" type="submit"> 추가하기 </Button>
             </form>  
         )
     }

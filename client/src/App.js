@@ -9,10 +9,11 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { TextField } from "@material-ui/core";
-import { Button } from "@material-ui/core";
 import CustomerAdd from './components/CustomerAdd';
+import AppBar from './components/AppBar';
 
+
+// 스타일
 
 const styles = theme => ({
   root: {
@@ -26,6 +27,7 @@ const styles = theme => ({
   progress : {
     margin : theme.spacing.unit * 2
   }
+ 
 });
 
 
@@ -44,11 +46,14 @@ const styles = theme => ({
 
 class App extends Component {
 
+  //state 설정
 
   state = {
     customer : "",
     completed : 0
   }
+
+  // 페이지 기본설정과 로딩
 
   componentDidMount() {
     this.timer = setInterval(this.progress, 20);    // 0.02초마다 progress()가 실행됨
@@ -57,24 +62,30 @@ class App extends Component {
       .catch(err => console.log(err));
   }
 
-  callApi = async () => {
-    const response = await fetch('/api/customers');
-    const body = await response.json();
-    return body;
-  }
-
   progress = () =>{
     const { completed } = this.state;
     this.setState({ completed : completed >= 100 ? 0 : completed +1 }); // progress >>  100을 넘어가면 0으로 초기화 / 이하이면 1씩 증가(0.02 초 마다)
 
   }
 
+  // 클라이언트 <- 서버  (데이터를 받는 곳)
+
+  callApi = async () => {
+    const response = await fetch('/api/customers');
+    const body = await response.json();
+    return body;
+  }
+
+  // 페이지 폼
+
   render() {
     const { classes } =  this.props;
 
     return (
-      <div>
-        <Paper className = {classes.root}>
+      <div className = {classes.root}>
+        <AppBar/> 
+        <CustomerAdd/>
+        <Paper>
           <Table className = {classes.table}>
             <TableHead>
               <TableRow>
@@ -109,7 +120,6 @@ class App extends Component {
             </TableBody>
           </Table>
         </Paper>
-        <CustomerAdd/>
       </div>
     );
   }
